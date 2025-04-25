@@ -106,7 +106,6 @@ document.addEventListener('DOMContentLoaded', () => {
     resultDiv.innerHTML = html;
 
     document.getElementById('exportPDF').addEventListener('click', () => {
-      const { jsPDF } = window.jspdf;
       const doc = new jsPDF();
 
       doc.setFontSize(14);
