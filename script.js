@@ -1,4 +1,3 @@
-
 let paneles = [];
 
 function agregarPanel() {
@@ -21,11 +20,20 @@ function mostrarPaneles() {
   lista.innerHTML = "";
   paneles.forEach((p, index) => {
     const item = document.createElement('li');
-    item.className = "list-group-item";
-    item.textContent = `Cliente: ${p.cliente} | Grosor: ${p.grosor}mm | ${p.cantidad} paneles de ${p.largo}mm`;
+    item.className = "list-group-item d-flex align-items-center";
+    item.innerHTML = `
+      Cliente: ${p.cliente} | Grosor: ${p.grosor}mm | ${p.cantidad} paneles de ${p.largo}mm
+      <button class="btn btn-sm btn-danger ms-auto" onclick="eliminarPanel(${index})">Eliminar</button>
+    `;
     lista.appendChild(item);
   });
 }
+
+function eliminarPanel(index) {
+  paneles.splice(index, 1);
+  mostrarPaneles();
+}
+
 
 function desglosarPaneles() {
   const panelLargo = 13500;
@@ -76,6 +84,8 @@ function desglosarPaneles() {
 `;
     }
   }
+
+
 
   document.getElementById('resultado').textContent = resultadoTexto;
   document.getElementById('btnExportar').disabled = false;
