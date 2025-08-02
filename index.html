@@ -1,59 +1,132 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>Desglose de Paneles | Solupeine</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" type="text/css" href="styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solupainel - Lista de Corte</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts & Font Awesome -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="style.css">
 </head>
-<body>
-<div class="container">
-  <img src="logo.png" alt="Solupeine" class="logo">
-  <h1 class="mb-4">Desglose de Paneles</h1>
+<body class="bg-slate-100">
 
-  <div class="form-section row g-3">
-    <div class="col-md-4">
-      <input type="text" id="cliente" class="form-control" placeholder="Nombre del cliente" required>
-    </div>
-    <div class="col-md-2">
-      <select id="grosor" class="form-select" required>
-        <option value="40">40mm</option>
-        <option value="60">60mm</option>
-        <option value="80">80mm</option>
-        <option value="100">100mm</option>
-        <option value="120">120mm</option>
-        <option value="150">150mm</option>
-        <option value="200">200mm</option>
-      </select>
-    </div>
-    <div class="col-md-2">
-      <input type="number" id="cantidad" class="form-control" placeholder="Cantidad" required>
-    </div>
-    <div class="col-md-2">
-      <input type="number" id="largo" class="form-control" placeholder="Largo (mm)" required>
-    </div>
-    <div class="col-md-2 d-grid">
-      <button onclick="agregarPanel()" class="btn btn-primary">Añadir Panel</button>
-    </div>
-  </div>
+    <div class="flex h-screen bg-slate-900 text-white">
+        <!-- Barra de Navegación Lateral -->
+        <aside class="w-64 bg-slate-900 p-6 flex flex-col">
+            <h1 class="text-2xl font-bold text-white flex items-center gap-2">
+                <i class="fa-solid fa-layer-group text-indigo-400"></i>
+                Solupainel
+            </h1>
+            <nav class="mt-10 space-y-2">
+                <a href="#" id="navDesglose" class="nav-link flex items-center gap-3 px-4 py-2.5 rounded-lg transition-colors">
+                    <i class="fa-solid fa-list-check fa-fw"></i>
+                    <span>Lista de Corte</span>
+                </a>
+                <a href="#" id="navHistorial" class="nav-link flex items-center gap-3 px-4 py-2.5 rounded-lg transition-colors">
+                    <i class="fa-solid fa-clock-rotate-left fa-fw"></i>
+                    <span>Historial</span>
+                </a>
+            </nav>
+            <div class="mt-auto text-xs text-slate-500">
+                <p>Versión 6.4 - Optimización FFD</p>
+            </div>
+        </aside>
 
-  <div class="paneles-agregados">
-    <h4>Paneles Añadidos:</h4>
-    <ul id="lista-paneles" class="list-group"></ul>
-  </div>
+        <!-- Contenido Principal -->
+        <main class="flex-1 bg-slate-100 text-slate-800 rounded-l-3xl p-4 sm:p-8 lg:p-12 overflow-y-auto">
 
-  <div class="d-grid mt-4">
-    <button onclick="desglosarPaneles()" class="btn btn-success mb-3">Desglosar</button>
-    <button onclick="exportarPDF()" id="btnExportar" class="btn btn-danger" disabled>Exportar a PDF</button>
-  </div>
+            <!-- Vista: Lista de Corte -->
+            <div id="viewDesglose" class="content-view">
+                <div class="max-w-7xl mx-auto">
+                    <h2 class="text-3xl font-bold text-slate-800 mb-6">Crear Lista de Corte</h2>
+                    
+                    <div class="bg-white p-6 rounded-2xl shadow-lg mb-8">
+                        <h3 class="font-semibold text-lg mb-4">Añadir Pieza a la Lista</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 items-end">
+                            <div>
+                                <label for="cliente" class="block text-sm font-medium text-slate-600 mb-1">Cliente</label>
+                                <input type="text" id="cliente" class="w-full p-3 border border-slate-300 rounded-lg" placeholder="Nombre del Cliente">
+                            </div>
+                             <div>
+                                <label for="grosor" class="block text-sm font-medium text-slate-600 mb-1">Grosor</label>
+                                <select id="grosor" class="w-full p-3 border border-slate-300 rounded-lg">
+                                    <option>40mm</option>
+                                    <option>60mm</option>
+                                    <option>80mm</option>
+                                    <option selected>100mm</option>
+                                    <option>120mm</option>
+                                    <option>150mm</option>
+                                    <option>200mm</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="piezaLargo" class="block text-sm font-medium text-slate-600 mb-1">Largo de Pieza (mm)</label>
+                                <input type="number" id="piezaLargo" class="w-full p-3 border border-slate-300 rounded-lg" placeholder="Ej: 3000">
+                            </div>
+                            <div class="flex items-end gap-2">
+                                <div class="flex-grow">
+                                    <label for="piezaCantidad" class="block text-sm font-medium text-slate-600 mb-1">Cantidad</label>
+                                    <input type="number" id="piezaCantidad" class="w-full p-3 border border-slate-300 rounded-lg" value="1">
+                                </div>
+                                <button id="addPieceBtn" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold p-3 rounded-lg transition h-[46px] flex items-center justify-center">
+                                    <i class="fa-solid fa-plus fa-lg"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
 
-  <div class="mt-4">
-    <h4>Resultado del Desglose:</h4>
-    <pre id="resultado" style="background:white; padding: 15px; border-radius: 5px;"></pre>
-  </div>
-</div>
+                    <div class="bg-white p-6 rounded-2xl shadow-lg">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="font-semibold text-lg">Lista de Corte Actual</h3>
+                            <button id="clearListBtn" class="text-sm text-slate-500 hover:text-red-500 transition-colors disabled:opacity-50 disabled:hover:text-slate-500" disabled>
+                                <i class="fa-solid fa-broom"></i> Limpiar Lista
+                            </button>
+                        </div>
+                        <div id="cuttingListContainer" class="space-y-3">
+                            <p class="text-slate-500">Aún no hay piezas en la lista.</p>
+                        </div>
+                        <button id="calculateBtn" class="mt-8 w-full bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-4 px-6 rounded-lg shadow-lg text-lg flex items-center justify-center gap-3 disabled:bg-slate-400 disabled:cursor-not-allowed" disabled>
+                            <i class="fa-solid fa-wand-magic-sparkles"></i> Optimizar y Calcular Desglose
+                        </button>
+                    </div>
+                </div>
+            </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<script src="script.js"></script>
+            <!-- Vista: Resultados -->
+            <div id="viewResultados" class="content-view">
+                <div class="max-w-7xl mx-auto">
+                    <div class="flex justify-between items-center mb-6">
+                         <h2 class="text-3xl font-bold text-slate-800">Resultados del Desglose</h2>
+                         <button id="backToCuttingListBtn" class="bg-slate-200 hover:bg-slate-300 text-slate-800 font-semibold py-2 px-4 rounded-lg transition">
+                            <i class="fa-solid fa-arrow-left"></i> Volver
+                         </button>
+                    </div>
+                    <div id="resultsContainer" class="space-y-8"></div>
+                </div>
+            </div>
+
+            <!-- Vista: Historial -->
+            <div id="viewHistorial" class="content-view">
+                 <div class="max-w-7xl mx-auto">
+                    <div class="flex justify-between items-center mb-8">
+                        <h2 class="text-3xl font-bold text-slate-800">Historial de Listas de Corte</h2>
+                        <button id="clearHistoryBtn" class="bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded-lg transition flex items-center gap-2 text-sm disabled:opacity-50" disabled>
+                            <i class="fa-solid fa-trash-can"></i> Limpiar Historial
+                        </button>
+                    </div>
+                    <div id="historialListContainer" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6"></div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Custom Script -->
+    <script src="script.js"></script>
 </body>
 </html>
