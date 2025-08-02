@@ -1,7 +1,47 @@
-body { background: #f8f9fa; padding: 20px; }
+body { 
+    font-family: 'Inter', sans-serif; 
+}
 
-.logo { max-height: 150px; margin-bottom: 20px; }
+.nav-link.active { 
+    background-color: #4f46e5; /* indigo-600 */
+    color: white; 
+}
 
-.form-section { margin-bottom: 30px; }
+.nav-link:not(.active):hover { 
+    background-color: #3730a3; /* indigo-800 */
+    color: white; 
+}
 
-.paneles-agregados { margin-top: 30px; }
+.content-view { 
+    display: none; 
+}
+
+.content-view.active { 
+    display: block; 
+}
+
+@keyframes fadeIn { 
+    from { 
+        opacity: 0; 
+        transform: translateY(10px); 
+    } 
+    to { 
+        opacity: 1; 
+        transform: translateY(0); 
+    } 
+}
+
+.fade-in { 
+    animation: fadeIn 0.5s ease-out forwards; 
+}
+
+select {
+    -webkit-appearance: none; 
+    -moz-appearance: none; 
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+    background-position: right 0.5rem center; 
+    background-repeat: no-repeat; 
+    background-size: 1.5em 1.5em; 
+    padding-right: 2.5rem;
+}
